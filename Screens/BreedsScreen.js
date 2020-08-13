@@ -21,11 +21,9 @@ const BreedsScreen = (props) => {
                 }}
             >
                 <View style={styles.container}>
-                    <ImageBackground style={styles.bgImage} source={{ uri: itemData.item.image_url }}  >
                         <View>
                             <Text>{itemData.item.name}</Text>
                         </View>
-                    </ImageBackground>
                 </View>
             </TouchableOpacity>
         )
@@ -35,7 +33,6 @@ const BreedsScreen = (props) => {
     return (
         <View style={styles.screen}>
             <Text>Breeds Screen</Text>
-            <Button title="Breed Detail Screen" onPress={() => { props.navigation.navigate('BreedDetail') }} />
             <FlatList
                 data={breedData}
                 renderItem={RenderDogBreed}
@@ -72,10 +69,7 @@ const styles = StyleSheet.create({
     breedItem: {
         height: 100,
     },
-    bgImage: {
-        width: '100%',
-        height: '100%',
-    },
+    
     container: {
         height: 100,
     }

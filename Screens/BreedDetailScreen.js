@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { HeaderTitle } from 'react-navigation-stack'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import CustomHeaderButton from '../Components/HeaderButton'
@@ -10,6 +10,7 @@ const BreedDetailScreen = (props) => {
 
     return (
         <View style={styles.screen}>
+            <Image style={styles.bgImage} source={{ uri: breedData.image_url }}  />
             <Text>{breedData.name}</Text>
             <Text>Temperament: {breedData.temperament}</Text>
             <Text>Weight: {breedData.weight}</Text>
@@ -47,7 +48,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    bgImage: {
+        width: '100%',
+        height: '100%',
+    },
 })
 
 export default BreedDetailScreen;
