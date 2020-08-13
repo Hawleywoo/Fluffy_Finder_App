@@ -10,6 +10,10 @@ const FilterBreedsScreen = () => {
     )
 }
 
+FilterBreedsScreen.navigationOption = {
+    headerTitle: 'Filter Breeds'
+}
+
 
 const styles = StyleSheet.create({
     screen: {
