@@ -22,13 +22,7 @@ const WelcomeScreen = (props) => {
     )
 }
 
-WelcomeScreen.navigationOptions = {
-    headerTitle: 'Welcome!',
-    headerStyle: {
-        backgroundColor: Colors.purple
-    },
-    headerTintColor: 'white'
-}
+
 // '#5fb49c' original
 // #61bdaa
 // rgb(97, 189, 170)
@@ -42,15 +36,21 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     buttonContainer1: {
-        borderBottomColor: '#414288',
-        borderBottomWidth: 2,
+        borderColor: '#414288',
+        borderWidth: 2,
+        borderRadius: 10,
         marginVertical: 15,
         width: 100,
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: 'black',
+        shadowOpacity: .5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 10, 
     },
     buttonContainer2: {
-        borderBottomColor: '#682d63',
-        borderBottomWidth: 2,
+        borderColor: '#682d63',
+        borderWidth: 2,
+        borderRadius: 10,
         marginVertical: 15,
         width: 100,
         alignItems: 'center'

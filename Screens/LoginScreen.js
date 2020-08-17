@@ -11,9 +11,9 @@ const LoginScreen = (props) => {
     return (
         <View style={styles.screen}>
             <Text style={styles.header}>Fluffy Finder</Text>
-            <TextInput style={styles.input} placeholder="Username..." value={username}/>
-            <TextInput style={styles.input} placeholder="Password..." value={password}/>
-            <Button title="continue" onPress={() => {props.navigation.replace('BreedsTab')}} />
+            <TextInput style={styles.input} placeholder="Username..." value={username} onChangeText={(username) => setUsername(username) } />
+            <TextInput style={styles.input} placeholder="Password..." value={password} onChangeText={(password) => setPassword(password)} />
+            <Button title="Login" onPress={() => {props.navigation.replace('BreedsTab')}} />
         </View>
     )
 }

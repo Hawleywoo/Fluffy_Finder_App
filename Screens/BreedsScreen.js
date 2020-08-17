@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image, Imag
 import Colors from '../Constants/Colors'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import CustomHeaderButton from '../Components/HeaderButton'
+import BreedItem from '../Components/BreedItem'
 
 const BreedsScreen = (props) => {
 
@@ -10,20 +11,19 @@ const BreedsScreen = (props) => {
 
     const RenderDogBreed = (itemData) => {
         return (
-            <TouchableOpacity 
-                style={styles.breedItem} 
-                onPress={() => { props.navigation.navigate({
-                    routeName: 'BreedDetail',
-                    params: {
-                        breed: itemData.item
+            <TouchableOpacity
+                style={styles.breedItem}
+                onPress={() => {
+                    props.navigation.navigate({
+                        routeName: 'BreedDetail',
+                        params: {
+                            breed: itemData.item
                         }
-                    }) 
+                    })
                 }}
             >
-                <View style={styles.container}>
-                        <View>
-                            <Text>{itemData.item.name}</Text>
-                        </View>
+                <View style={styles.breedContainer}>
+                    <Text style={styles.name}>{itemData.item.name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -34,6 +34,7 @@ const BreedsScreen = (props) => {
         <View style={styles.screen}>
             <Text>Breeds Screen</Text>
             <FlatList
+                keyExtractor={(item, index) => item.id.toString()}
                 data={breedData}
                 renderItem={RenderDogBreed}
             />
@@ -44,37 +45,77 @@ const BreedsScreen = (props) => {
 BreedsScreen.navigationOptions = (navData) => {
 
     return {
-        headerTitle: 'All Breeds',
-        headerLeft: () => {
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item title="Menu" iconName='ios-menu' onPress={() => {
-                    navData.navigation.toggleDrawer()
-                }} />
-            </HeaderButtons>
-        },
-        headerStyle: {
-            backgroundColor: Colors.purple
-        },
-        headerTintColor: Colors.lightYellow
-    }
-}
+        headerTitle: () => (<Text>something</Text>),
+        headerRight: () => (
+            <Button
+                onPress={navigation.getParam('increaseCount')}
+                title="+1"
+                color="#fff"
+            />
+        ),
+    };
+};
 
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: Colors.purple
     },
     breedItem: {
+        paddingVertical: 50,
         height: 100,
+        width: '100%',
+        alignItems: 'center',
     },
-    
+
     container: {
-        height: 100,
+        flex: 1,
+        alignItems: 'center'
+    },
+    breedContainer: {
+        height: 50,
+        width: '90%',
+        borderRadius: 10,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 10, 
+        backgroundColor: 'hsla(305, 10%, 29%, .7)',
+        
+
+    },
+    name: {
+        fontSize: 25,
+        color: Colors.lightYellow,
+        paddingVertical: 10,
+        paddingHorizontal: 50,
     }
 })
 
 export default BreedsScreen;
 
 // Use navigation.replace for login to not go back.
+
+
+// headerTitle: 'All Breeds',
+//         headerRight: () => (
+//             <Button
+//               onPress={() => alert('This is a button!')}
+//               title="Info"
+//               color="#fff"
+//             />
+//           ),
+//             // <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+//             //     <Item title="Menu" iconName='ios-menu' onPress={() => {
+//             //         navData.navigation.toggleDrawer()
+//             //     }} />
+//             // </HeaderButtons>
+
+//         headerStyle: {
+//             backgroundColor: Colors.purple
+//         },
+//         headerTintColor: Colors.lightYellow
+//     }

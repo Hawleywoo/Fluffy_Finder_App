@@ -25,7 +25,7 @@ const FilterNavigator = createStackNavigator({
 })
 
 const BreedFavTabNavigator = createBottomTabNavigator({
-    Breeds: BreedNavigator,
+    Main: BreedNavigator,
     Favorites: FavoriteScreen,
 })
 const WelcomeNavigator = createStackNavigator({
