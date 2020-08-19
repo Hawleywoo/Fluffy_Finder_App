@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Button, StyleSheet, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import  Colors  from '../Constants/Colors'
+import Colors from '../Constants/Colors'
 
 const WelcomeScreen = (props) => {
 
@@ -10,9 +10,9 @@ const WelcomeScreen = (props) => {
         <View style={styles.screen}>
             <View style={styles.header}>
                 <Image source={require('../Logo1.png')} style={styles.logo} />
-                <Text style={styles.welcome}> Fluffy Finder</Text>
+                <Text style={styles.headerText}> Fluffy Finder</Text>
             </View>
-            <TouchableOpacity  style={styles.buttonContainer1} onPress={() => props.navigation.replace('SignUp')}>
+            <TouchableOpacity style={styles.buttonContainer1} onPress={() => props.navigation.replace('SignUp')}>
                 <Text style={styles.button} >Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer2} onPress={() => props.navigation.replace('Login')}>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: .5,
         shadowOffset: { width: 2, height: 2 },
-        shadowRadius: 10, 
+        shadowRadius: 10,
     },
     buttonContainer2: {
         borderColor: '#682d63',
@@ -53,20 +53,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginVertical: 15,
         width: 100,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     button: {
         // padding: ,
         fontSize: 15,
         borderRadius: 50,
-        marginVertical: 10,
+        marginVertical: 8,
         color: 'white',
         // backgroundColor: 'white'
     },
-    welcome: {
+    headerText: {
         color: 'white',
         fontSize: 35,
-        paddingVertical: 15,
+        paddingBottom: 5,
     },
     logo: {
         height: 50,
@@ -74,8 +74,11 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        paddingVertical: 10,
+        // paddingVertical: 10,
+        marginBottom: 25,
         alignItems: 'center',
+        borderBottomWidth: 2,
+        borderBottomColor: 'hsla(0, 0%, 100%, .5)',
     }
 })
 

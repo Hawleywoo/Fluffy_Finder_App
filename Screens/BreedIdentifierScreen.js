@@ -91,7 +91,6 @@ class BreedIdentifierScreen extends React.Component {
     imageToTensor(rawImageData) {
         const TO_UINT8ARRAY = true
         const { width, height, data } = jpeg.decode(rawImageData, TO_UINT8ARRAY)
-        // Drop the alpha channel info for mobilenet
         const buffer = new Uint8Array(width * height * 3)
         let offset = 0 // offset into original data
         for (let i = 0; i < buffer.length; i += 3) {
@@ -139,7 +138,7 @@ class BreedIdentifierScreen extends React.Component {
 
     renderPrediction = prediction => {
         return (
-            <Text key={prediction.className} style={styles.text}>
+            <Text key={prediction.className} style={styles.predictionText}>
                 {prediction.className}
             </Text>
         )
@@ -169,49 +168,51 @@ class BreedIdentifierScreen extends React.Component {
             <View style={styles.container}>
                 <StatusBar barStyle='light-content' />
                 <View style={styles.loadingContainer}>
-                    <Text style={styles.text}>
+                    <Text style={styles.readyText}>
                         TFJS ready? {isTfReady ? <Text>✅</Text> : ''}
                     </Text>
 
                     <View style={styles.loadingModelContainer}>
-                        <Text style={styles.text}>Model ready? </Text>
-                        {isModelReady ? (
-                            <Text style={styles.text}>✅</Text>
-                        ) : (
-                                <ActivityIndicator size='small' />
-                            )}
+                        <Text style={styles.readyText}>Model ready? </Text>
+                        {isModelReady 
+                        ? (<Text style={styles.text}>✅</Text>) 
+                        : ( <ActivityIndicator size='small' />)}
                     </View>
                 </View>
                 <View >
                     <TouchableOpacity style={styles.imageWrapper} onPress={() => this.setState({ image: null, predictions: null })}>
-                        {image && <Image source={image} style={styles.imageContainer} />}
+                        {image
+                            ? <Image source={image} style={styles.imageContainer} />
+
+                            : <View style={styles.optionContainer} >
+                                <TouchableOpacity
+                                    onPress={isModelReady ? this.useCameraImage : undefined}>
+                                    {isModelReady && !image && (
+                                        <Text style={styles.transparentText}>
+                                            Tap to open camera
+                                        </Text>
+                                    )}
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    // style={styles.imageWrapper}
+                                    onPress={isModelReady ? this.selectImage : undefined}>
+
+                                    {isModelReady && !image && (
+                                        <Text style={styles.transparentText}>
+                                            Tap to choose image
+                                        </Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        }
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    onPress={isModelReady ? this.useCameraImage : undefined}>
-                    {isModelReady && !image && (
-                        <Text style={styles.transparentText}>
-                            Tap to open camera
-                        </Text>
-                    )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                    // style={styles.imageWrapper}
-                    onPress={isModelReady ? this.selectImage : undefined}>
-
-                    {isModelReady && !image && (
-                        <Text style={styles.transparentText}>
-                            Tap to choose image
-                        </Text>
-                    )}
-                </TouchableOpacity>
                 <View style={styles.predictionWrapper}>
                     {isModelReady && image && (
                         <View>
-
-                            <Text>Tap Image To Identify Another Image...</Text>
-                            <Text style={styles.text}>
-                                Predictions: {predictions ? '' : 'Predicting...'}
+                            <Text style={styles.transparentText}>Tap Image To Identify Another Dog...</Text>
+                            <Text style={{...styles.text, ...styles.textHeader}}>
+                                Predictions: {predictions ? '' : ' Predicting...'}
                             </Text>
                         </View>
                     )}
@@ -230,7 +231,7 @@ class BreedIdentifierScreen extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
     container: {
         flex: 1,
         backgroundColor: '#414288',
@@ -242,7 +243,23 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#ffffff',
-        fontSize: 16
+        fontSize: 16,
+        paddingVertical: 7,
+    },
+    predictionText: {
+        color: '#ffffff',
+        fontSize: 16,
+        paddingHorizontal: 15,
+    },
+    readyText: {
+        color: '#ffffff',
+        fontSize: 16,
+    },
+    textHeader: {
+        fontSize: 22,
+        borderBottomWidth: 3,
+        borderBottomColor: 'white',
+        paddingVertical: 5,
     },
     loadingModelContainer: {
         flexDirection: 'row',
@@ -274,24 +291,18 @@ const styles = StyleSheet.create({
         height: 100,
         width: '100%',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     transparentText: {
+        fontSize: 15,
         color: '#ffffff',
-        opacity: 0.7
+        opacity: 0.7,
+        paddingTop: 10,
     },
     footer: {
         marginTop: 40
     },
-    poweredBy: {
-        fontSize: 20,
-        color: '#e69e34',
-        marginBottom: 6
-    },
-    tfLogo: {
-        width: 125,
-        height: 70
-    }
 })
 
 

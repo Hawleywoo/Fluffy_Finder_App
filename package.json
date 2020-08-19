@@ -50,5 +50,10 @@
     "babel-preset-expo": "^8.2.3",
     "metro-react-native-babel-preset": "^0.62.0"
   },
+  "rnpm":{
+    "assets": [
+      "./assets/fonts/"
+    ]
+  },
   "private": true
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigation } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import BreedsScreen from '../Screens/BreedsScreen';
@@ -35,6 +35,9 @@ const WelcomeNavigator = createStackNavigator({
     BreedsTab: BreedFavTabNavigator,
 });
 
+const LoginNavigator = createStackNavigator({
+    Login: LoginScreen,
+})
 
 
 const MainNavigator = createDrawerNavigator({

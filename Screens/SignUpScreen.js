@@ -7,6 +7,7 @@ const SignUpScreen = (props) => {
 
     return (
         <View>
+            <TextInput id='email' label='Email' keyboardType="email-address" errorMessage onValueChange />
             <Button title="continue" onPress={() => {props.navigation.replace('BreedsTab')}} />
         </View>
     )
