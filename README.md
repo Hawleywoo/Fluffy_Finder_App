@@ -20,6 +20,7 @@ The Recipe Locker is a full-stack application made with Ruby on Rails, React Nat
 use a image from camera roll or take an image with camera to classify the breed.
 
 ## Intro Video
+ [Fluffy Finder Demo](https://www.youtube.com/watch?v=mG36I8YvCnc)
 
 ## Capstone Flatiron Project by Andrew Hawley
 
