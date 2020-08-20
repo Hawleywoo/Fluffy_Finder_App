@@ -1,68 +1,80 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Button, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Button, Dimensions, ActivityIndicator } from 'react-native'
 import { headerTitle, headerRight } from 'react-navigation-stack'
 import MyCarousel from '../Components/MyCarousel'
 import Colors from '../Constants/Colors'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const MainMenuScreen = (props) => {
-
+    
+    const user = props.navigation.getParam('user')
     const [breedsData, setBreedData] = useState([])
     const [filteredBreed, setfilteredBreed] = useState([])
-    const [isCarouselReady, setCarouselReady] = useState(false)
+    const [isCarouselReady, setIsCarouselReady] = useState(false)
 
     useEffect(() => {
         fetch('http://localhost:3000/breeds')
             .then((response) => response.json())
             .then(result => {
-                let filteredDogs = result.filter(item => {
-                    return (
-                        item.id == Math.floor(Math.random() * 176)
-                        || item.id == Math.floor(Math.random() * 176)
-                        || item.id == Math.floor(Math.random() * 176)
-                        || item.id == Math.floor(Math.random() * 176)
-                        || item.id == Math.floor(Math.random() * 176)
-                        || item.id == Math.floor(Math.random() * 176)
-                    )
-                })
-                setfilteredBreed(filteredDogs)
-                console.log(result)
-                return result
+                if(result.errors) {
+                    let 
+                } else {
+                    let filteredDogs = result.filter(item => {
+                        return (
+                            item.id == Math.floor(Math.random() * 176)
+                            || item.id == Math.floor(Math.random() * 176)
+                            || item.id == Math.floor(Math.random() * 176)
+                            || item.id == Math.floor(Math.random() * 176)
+                            || item.id == Math.floor(Math.random() * 176)
+                            || item.id == Math.floor(Math.random() * 176)
+                        )
+                    })
+                    setfilteredBreed(filteredDogs)
+                    return result
+                }
             })
             .then(setIsCarouselReady(true))
-            .then( result => setBreedData(result))
-        }, [])
+            .then(result => setBreedData(result))
+    }, [])
 
     return (
         <View style={styles.screen}>
-            <Text style={styles.header} >Fluffy Finder</Text>
-            {isCarouselReady 
-                ?<MyCarousel style={styles.carousel} dogs={filteredBreed} />
-                : <ActivityIndicator size='medium' />
-        }
+            <Text style={styles.header} >Welcome {user ? user.username :  'to Fluffy Finder' }!</Text>
+            {isCarouselReady
+                ? <MyCarousel style={styles.carousel} dogs={filteredBreed} />
+                : <ActivityIndicator size='large' />
+            }
             <Text style={styles.header}>Main Menu</Text>
             <View style={styles.menuContainer}>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.menuItemContainer}
                     onPress={() => {
-                    props.navigation.navigate({
-                        routeName: 'Breeds',
-                        params: {
-                            breedsData: breedsData
-                        }
-                    })
-                }}>
+                        props.navigation.navigate({
+                            routeName: 'Breeds',
+                            params: {
+                                breedsData: breedsData
+                            }
+                        })
+                    }}>
                     <Text style={styles.menuText}>List of Breeds</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.menuItemContainer}
-                    onPress={() => { props.navigation.navigate('BreedIdentifier') }}>
+                    onPress={() => {
+                        props.navigation.navigate({
+                            routeName: 'BreedIdentifier',
+                            params: {
+                                breedsData: breedsData
+                            },
+                        })
+                    }}
+                >
                     <Text style={styles.menuText}>Breed Identifier</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.menuItemContainer}
                     onPress={() => { props.navigation.navigate('BreedIdentifier') }}>
-                    <Text style={styles.menuText} >Breed Identifier</Text>
+                    <Text style={styles.menuText} >Favorite Breeds </Text>
                 </TouchableOpacity>
 
             </View>
@@ -89,7 +101,18 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     menuItemContainer: {
-        paddingTop: 15,
+        marginTop: 25,
+        paddingHorizontal: 10,
+        paddingBottom: 5,
+        borderBottomWidth: 2,
+        borderLeftWidth: 2,
+        borderColor: 'hsla(0, 0%, 100%, .3)',
+        marginBottom: 5,
+        borderBottomLeftRadius: 15,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 10,
     },
     menuContainer: {
 
@@ -102,7 +125,7 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingTop: 35,
-        fontSize: 25,
+        fontSize: 30,
         color: Colors.tealUsed,
         fontWeight: "900",
         textShadowColor: 'rgba(0, 0, 0, 0.75)',

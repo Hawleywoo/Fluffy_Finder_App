@@ -1,20 +1,25 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import Colors from '../Constants/Colors'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { isLoading } from 'expo-font'
 
 const LoginScreen = (props) => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [alerts, setAlerts] = useState([])
+    const [toggleLogin, setToggleLogin] = useState(false)
+    const [user, setUser] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleLoginSubmit = () => {
-        console.log('worked')
         fetch('http://localhost:3000/login',
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/josn'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     username: username,
@@ -22,15 +27,28 @@ const LoginScreen = (props) => {
                 })
             })
             .then(response => response.json())
-            .then(result => console.log(result))
+            .then(result => {
+                if (result.errors) {
+                    setAlerts(result.errors)
+                } else {
+                    setUser(result.user)
+                    setAlerts(["Successful Login!"])
+                }
+                return result.user
+            })
+            .then((user) => {
+                
+                }) 
+            
     }
 
     const handleSignUpSubmit = () => {
+    
         fetch('http://localhost:3000/users',
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/josn'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     username: username,
@@ -39,9 +57,16 @@ const LoginScreen = (props) => {
                 })
             })
             .then(response => response.json())
-            .then(result => console.log(result))
+            .then(result => {
+                if(result.errors){
+                    setAlerts(result.errors)
+                } else {
+                    setUser(result.user)
+                    setAlerts(["Successful Sign Up!"])
+                }
+            })
     }
-
+    
     return (
         <KeyboardAvoidingView
             behavior='padding'
@@ -50,11 +75,11 @@ const LoginScreen = (props) => {
             <View style={styles.loginContainer}>
                 <ScrollView>
                     <Text style={styles.header}>Fluffy Finder</Text>
-                    <TextInput 
-                    style={styles.input} 
-                    placeholder="Username..." 
-                    value={username} 
-                    onChangeText={(username) => setUsername(username)} 
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Username..."
+                        value={username}
+                        onChangeText={(username) => setUsername(username)}
                     />
                     <TextInput
                         blurOnSubmit
@@ -67,16 +92,43 @@ const LoginScreen = (props) => {
                         value={password}
                         autoCorrect={false}
                         onChangeText={(password) => setPassword(password)} />
-                    <Button
-                        title="Login"
-                        onPress={
-                            () => {
-                                handleLoginSubmit()
-                                props.navigation.replace('BreedsTab')
+                    {toggleLogin
+                        ? null
+                        : <TextInput
+                            blurOnSubmit
+                            style={styles.input}
+                            placeholder="Email..."
+                            keyboardType='default'
+                            autoCapitalize='none'
+                            value={email}
+                            autoCorrect={false}
+                            onChangeText={(email) => setEmail(email)} 
+                    /> }
+                    {isLoading
+                        ? <ActivityIndicator size='small' />
+                        : <Button
+                            title={toggleLogin ? "Login" : "Sign Up"}
+                            onPress={toggleLogin
+                                ? () => {
+                                    setIsLoading(true)
+                                    handleLoginSubmit
+                                    setIsLoading(false)
+                                    props.navigation.replace({
+                                        routeName: 'Fluffy Finder',
+                                        params: {
+                                            user: user
+                                        }
+                                    })
+                                }
+                                : () => {
+                                    handleSignUpSubmit
+                                }
                             }
-                        }
-                    />
-                    <Button title="Sign Up " onPress={() => { }} />
+                        />
+                    }
+                    <TouchableOpacity onPress={() => { setToggleLogin(!toggleLogin) }}>
+                        <Text>{toggleLogin ? 'Need to Sign Up?' : 'Switch to Login'}</Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         </KeyboardAvoidingView>
@@ -110,7 +162,7 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         padding: 20,
         backgroundColor: 'white',
-        maxHeight: 300,
+        maxHeight: 500,
         maxWidth: 300,
     }
 

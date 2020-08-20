@@ -32,7 +32,6 @@ const BreedsScreen = (props) => {
 
     return (
         <View style={styles.screen}>
-            <Text>Breeds Screen</Text>
             <FlatList
                 keyExtractor={(item, index) => item.id.toString()}
                 data={breedData}
@@ -50,7 +49,7 @@ BreedsScreen.navigationOptions = (navData) => {
             <Button
                 onPress={navigation.getParam('increaseCount')}
                 title="+1"
-                color="#fff"
+                color="black"
             />
         ),
     };

@@ -1,47 +1,3 @@
-// import React, { useState, useEffect } from 'react'
-// import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
-// import ImageSelector from '../Components/ImageSelector'
-// // import * as mobilenet from '@tensorflow-models/mobilenet'
-// // import {fetch, decodeJpeg} from '@tensorflow/tfjs-react-native'
-
-// const BreedIdentifierScreen = (props) => {
-
-//     const [pickedImage, setPickedImage] = useState(null)
-
-//     const addImage = (image) => {
-//         setPickedImage(image)
-//     }
-
-
-//     return (
-//         <View>
-//             <Text>BreedIdentifierScreen</Text>
-//             <ImageSelector image={addImage} />
-//             <TouchableOpacity onPress={()=> {}} style={styles.button}>
-//             </TouchableOpacity>
-
-//             <TouchableOpacity onPress={()=> {}} style={styles.button}>
-//             </TouchableOpacity>
-//         </View>
-//     )
-// }
-
-
-// const styles = StyleSheet.create({
-//     button: {
-
-//     },
-//     buttonText: {
-
-//     },
-//     thumbnail: {
-//         width: 300,
-//         height: 300,
-//         resizeMode: 'contain',
-//     },
-// })
-
-
 import React from 'react'
 import {
     StyleSheet,
@@ -66,14 +22,16 @@ class BreedIdentifierScreen extends React.Component {
         isTfReady: false,
         isModelReady: false,
         predictions: null,
-        image: null
+        image: null,
+        breedData: null
     }
-
+    
     async componentDidMount() {
         await tf.ready()
         this.setState({
             isTfReady: true
         })
+        // this.setState({breedData: this.props.navigation.navigation.getParams('breedsData')})
         this.model = await mobilenet.load()
         this.setState({ isModelReady: true })
         this.getPermissionAsync()
@@ -161,6 +119,11 @@ class BreedIdentifierScreen extends React.Component {
         }
     }
 
+    
+    findBreed = this.state.predictions 
+        ? this.state.breedData.find(breed => breed.name == predictions[0]["className"].split(',')[0])
+        : null;
+
     render() {
         const { isTfReady, isModelReady, predictions, image } = this.state
 
@@ -174,9 +137,9 @@ class BreedIdentifierScreen extends React.Component {
 
                     <View style={styles.loadingModelContainer}>
                         <Text style={styles.readyText}>Model ready? </Text>
-                        {isModelReady 
-                        ? (<Text style={styles.text}>✅</Text>) 
-                        : ( <ActivityIndicator size='small' />)}
+                        {isModelReady
+                            ? (<Text style={styles.text}>✅</Text>)
+                            : (<ActivityIndicator size='small' />)}
                     </View>
                 </View>
                 <View >
@@ -211,7 +174,7 @@ class BreedIdentifierScreen extends React.Component {
                     {isModelReady && image && (
                         <View>
                             <Text style={styles.transparentText}>Tap Image To Identify Another Dog...</Text>
-                            <Text style={{...styles.text, ...styles.textHeader}}>
+                            <Text style={{ ...styles.text, ...styles.textHeader }}>
                                 Predictions: {predictions ? '' : ' Predicting...'}
                             </Text>
                         </View>
@@ -220,7 +183,22 @@ class BreedIdentifierScreen extends React.Component {
                         predictions &&
                         (
                             <View>
-                                {predictions.map(p => this.renderPrediction(p))}
+                                <View>
+                                    {predictions.map(p => this.renderPrediction(p))}
+                                </View>
+                                {/* <TouchableOpacity 
+                                    style={styles.detailLink} 
+                                    onPress={() => {
+                                        
+                                        this.props.navigation.navigate({
+                                            routeName: 'BreedDetail',
+                                            params: {
+                                                breed: this.findBreed
+                                            }
+                                        })
+                                    }}>
+                                    <Text>{predictions[0]["className"].split(',')[0]}</Text>
+                                </TouchableOpacity> */}
                             </View>
                         )}
                 </View>
@@ -231,7 +209,7 @@ class BreedIdentifierScreen extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#414288',

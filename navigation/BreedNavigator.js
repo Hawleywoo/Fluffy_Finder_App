@@ -32,7 +32,7 @@ const WelcomeNavigator = createStackNavigator({
     Welcome: WelcomeScreen,
     SignUp: SignUpScreen,
     Login: LoginScreen,
-    BreedsTab: BreedFavTabNavigator,
+    'Fluffy Finder': BreedFavTabNavigator,
 });
 
 const LoginNavigator = createStackNavigator({

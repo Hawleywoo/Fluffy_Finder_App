@@ -12,11 +12,11 @@ const WelcomeScreen = (props) => {
                 <Image source={require('../Logo1.png')} style={styles.logo} />
                 <Text style={styles.headerText}> Fluffy Finder</Text>
             </View>
-            <TouchableOpacity style={styles.buttonContainer1} onPress={() => props.navigation.replace('SignUp')}>
+            {/* <TouchableOpacity style={styles.buttonContainer1} onPress={() => props.navigation.replace('SignUp')}>
                 <Text style={styles.button} >Sign Up</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.buttonContainer2} onPress={() => props.navigation.replace('Login')}>
-                <Text style={styles.button} >Login</Text>
+                <Text style={styles.button} >Continue</Text>
             </TouchableOpacity>
         </View>
     )
