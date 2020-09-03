@@ -16,7 +16,7 @@
   
 ## General Info
 
-The Recipe Locker is a full-stack application made with Ruby on Rails, React Native and TensorFlow.js that allows users to search through breeds, 
+The Fluffy Finder is a full-stack application made with Ruby on Rails, React Native and TensorFlow.js that allows users to search through breeds, 
 use a image from camera roll or take an image with camera to classify the breed.
 
 ## Intro Video
